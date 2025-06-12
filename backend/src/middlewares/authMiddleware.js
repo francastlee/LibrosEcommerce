@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-const checkToken = (req, res, next) => {
+const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader?.startsWith('Bearer ')) {
@@ -18,4 +18,4 @@ const checkToken = (req, res, next) => {
   }
 };
 
-export default checkToken;
+export default verifyToken;
