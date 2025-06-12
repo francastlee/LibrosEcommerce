@@ -68,6 +68,7 @@
 - POST	   **/api/books**	         Crear libro (solo admin)
 - PUT	   **/api/books/:id**	     Editar libro (solo admin)
 - DELETE   **/api/books/:id**	     Eliminar libro (solo admin)
+
    **Carrito**
 
 - POST	   **/api/cart**	         Agregar libro al carrito
