@@ -9,12 +9,12 @@ Este proyecto es el backend de una plataforma e-commerce especializada en libros
 El backend está organizado en capas siguiendo buenas prácticas:
 
 backend/
-├── controllers/ # Controladores de las rutas
-├── services/ # Lógica de negocio y validaciones
-├── repositories/ # Consultas a la base de datos
-├── routes/ # Rutas públicas y protegidas
-├── middlewares/ # Autenticación y control de roles
-└── config/ # Configuración de la base de datos y entorno
+controllers/ # Controladores de las rutas
+services/ # Lógica de negocio y validaciones
+repositories/ # Consultas a la base de datos
+routes/ # Rutas públicas y protegidas
+middlewares/ # Autenticación y control de roles
+config/ # Configuración de la base de datos y entorno
 
 ---
 
@@ -47,9 +47,7 @@ backend/
 4. Ejecuta el script SQL para crear las tablas:
    - **users**
    - **roles**
-   - **user_role
-
-**
+   - **user_role**
    - **JWT (JSON Web Tokens)**
    - **Bcrypt**
    - **Dotenv**
@@ -61,23 +59,22 @@ backend/
 
   **Autenticación**
 
-POST	/api/auth/register	   Registro de usuario
-POST	/api/auth/login	       Login
+POST	/api/auth/register	Registro de usuario
+POST	/api/auth/login	Login
 
   **Libros**
 
-GET	    /api/books	           Lista pública de libros
-POST	/api/books	           Crear libro (solo admin)
-PUT	    /api/books/:id	       Editar libro (solo admin)
-DELETE	/api/books/:id	       Eliminar libro (solo admin)
-
+GET	/api/books	Lista pública de libros
+POST	/api/books	Crear libro (solo admin)
+PUT	/api/books/:id	Editar libro (solo admin)
+DELETE	/api/books/:id	Eliminar libro (solo admin)
    **Carrito**
 
-POST	/api/cart	            Agregar libro al carrito
-GET	    /api/cart	            Ver contenido del carrito
-GET	    /api/cart/total	        Ver total acumulado
-DELETE	/api/cart/:bookId	    Eliminar un libro del carrito
-DELETE	/api/cart	            Vaciar todo el carrito
-PATCH	/api/cart/:bookId	    Actualizar cantidad (con "operation" en el body: "increment" o "decrement")
+POST	/api/cart	Agregar libro al carrito
+GET	/api/cart	Ver contenido del carrito
+GET	/api/cart/total	Ver total acumulado
+DELETE	/api/cart/:bookId	Eliminar un libro del carrito
+DELETE	/api/cart	Vaciar todo el carrito
+PATCH	/api/cart/:bookId	Actualizar cantidad (operation: "increment" o "decrement")
 
 **Importante: Todos los endpoints del carrito y libros protegidos requieren un token JWT válido.**
