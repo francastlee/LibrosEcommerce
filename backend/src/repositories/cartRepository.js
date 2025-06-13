@@ -17,7 +17,7 @@ export const addToCart = async (userId, bookId, quantity) => {
 export const getCartItems = async (userId) => {
   const result = await pool.query(
     `
-    SELECT ci.id, b.title, b.price, ci.quantity, (b.price * ci.quantity) AS subtotal
+    SELECT ci.id, b.id as book_id, b.title, b.price, ci.quantity, b.image, (b.price * ci.quantity) AS subtotal
     FROM cart_items ci
     JOIN books b ON ci.book_id = b.id
     WHERE ci.user_id = $1
@@ -29,11 +29,12 @@ export const getCartItems = async (userId) => {
 
 export const removeFromCart = async (userId, bookId) => {
   const result = await pool.query(
-    `DELETE FROM cart_items WHERE user_id = $1 AND book_id = $2 RETURNING *`,
+    'DELETE FROM cart_items WHERE user_id = $1 AND book_id = $2 RETURNING *',
     [userId, bookId]
   );
-  return result.rows[0];
+  return result.rows[0]; 
 };
+
 
 export const clearCart = async (userId) => {
   await pool.query(`DELETE FROM cart_items WHERE user_id = $1`, [userId]);
@@ -52,37 +53,24 @@ export const getCartTotal = async (userId) => {
   return result.rows[0]?.total || 0;
 };
 
-export const decrementCartItem = async (userId, bookId) => {
+export async function getCartItem(userId, bookId) {
+  const result = await db.query(
+    'SELECT * FROM cart WHERE user_id = $1 AND book_id = $2',
+    [userId, bookId]
+  );
+  return result.rows[0] || null;
+}
+
+export const updateCartItemQuantity = async (userId, bookId, quantity) => {
   const result = await pool.query(
     `
     UPDATE cart_items
-    SET quantity = quantity - 1
-    WHERE user_id = $1 AND book_id = $2 AND quantity > 1
-    RETURNING *;
+    SET quantity = $1
+    WHERE user_id = $2 AND book_id = $3
+    RETURNING *
     `,
-    [userId, bookId]
+    [quantity, userId, bookId]
   );
 
-  if (result.rowCount === 0) {
-    const deleted = await pool.query(
-      `DELETE FROM cart_items WHERE user_id = $1 AND book_id = $2 RETURNING *`,
-      [userId, bookId]
-    );
-    return deleted.rows[0];
-  }
-
-  return result.rows[0];
-};
-
-export const incrementCartItem = async (userId, bookId) => {
-  const result = await pool.query(
-    `
-    UPDATE cart_items
-    SET quantity = quantity + 1
-    WHERE user_id = $1 AND book_id = $2
-    RETURNING *;
-    `,
-    [userId, bookId]
-  );
   return result.rows[0];
 };

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useBooks } from '../../../hooks/useBooks';
 import { useAuth } from '../../../context/AuthContext';
@@ -8,7 +8,7 @@ import gsap from 'gsap';
 
 import CardBook from '../../../components/books/CardBook';
 import Alert from '../../../components/ui/Alert';
-import ModalQuantity from '../../../components/books/modalQuantity';
+import ModalQuantity from '../../../components/ui/modalQuantity';
 import BookFilters from '../../../components/books/BookFilters';
 
 const MIN = 0;
@@ -43,6 +43,27 @@ export default function BooksPage() {
     currentPage * BOOKS_PER_PAGE
   );
 
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const cards = containerRef.current.querySelectorAll('.book-card');
+
+    gsap.fromTo(
+      cards,
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: 'power2.out',
+      }
+    );
+  }, [filteredBooks, currentPage]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchName, priceRange]);
   const handleClickAddToCart = (book) => {
     if (!authenticated || !user) {
       router.push('/auth/login');
