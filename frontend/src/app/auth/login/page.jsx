@@ -2,23 +2,20 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '../../../../context/AuthContext.jsx';
+import Alert from '../../../../components/ui/Alert.jsx';
+import AnimatedTitle from '../../../../components/ui/AnimatedTitle.jsx';
+import InputPassword from '../../../../components/ui/InputPassword.jsx'
 import gsap from 'gsap';
-import Alert from '../../../components/Alert';
-import InputPassword from '../../../components/InputPassword';
-import AnimatedTitle from '../../../components/AnimatedTitle';
 
-export default function RegisterPage() {
+export default function LoginPage() {
+  const { login } = useAuth();
   const router = useRouter();
   const formRef = useRef(null);
 
-  const [form, setForm] = useState({
-    name: '',
-    email: '',
-    password: '',
-  });
-
+  const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
-  const [exito, setExito] = useState('');
+  const [success, setSuccess] = useState('');
 
   useEffect(() => {
     gsap.to(formRef.current, {
@@ -36,20 +33,20 @@ export default function RegisterPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    setSuccess('');
 
     try {
-      const res = await fetch('http://localhost:8080/api/auth/register', {
+      const res = await fetch('http://localhost:8080/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Registro fallido');
+      if (!res.ok) throw new Error(data.error || 'Login failed');
 
-      setExito('Usuario registrado con éxito. Redirigiendo...');
-      setTimeout(() => router.push('/login'), 2000);
+      login(data);
+      setSuccess('Inicio de sesión exitoso. Redirigiendo...');
+      router.push('/books');
     } catch (err) {
       setError(err.message);
     }
@@ -58,7 +55,7 @@ export default function RegisterPage() {
   return (
     <>
       <Alert message={error} type="error" onClose={() => setError('')} />
-      <Alert message={exito} type="success" onClose={() => setExito('')} />
+      <Alert message={success} type="success" onClose={() => setExito('')} />
 
       <section className="min-h-screen flex flex-col items-center justify-center bg-[#505168] px-4">
         <AnimatedTitle />
@@ -67,29 +64,12 @@ export default function RegisterPage() {
           ref={formRef}
           onSubmit={handleSubmit}
           style={{ opacity: 0 }}
-          className="bg-[#27233A] shadow-md rounded-xl p-8 w-full max-w-md"
+          className="bg-[#27233A] shadow-lg rounded-xl p-8 w-full max-w-md"
         >
-          <h2 className="text-2xl font-bold mb-6 text-center text-[#DCC48E]">Crear cuenta</h2>
+          <h2 className="text-2xl font-bold mb-6 text-center text-[#DCC48E]">Iniciar sesión</h2>
 
           <div className="mb-4">
-            <label htmlFor="name" className="block mb-1 font-medium text-white">
-              Nombre completo
-            </label>
-            <input
-              id="name"
-              type="text"
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              required
-              className="w-full border rounded px-3 py-2 text-[#DCC48E]"
-            />
-          </div>
-
-          <div className="mb-4">
-            <label htmlFor="email" className="block mb-1 font-medium text-white">
-              Correo electrónico
-            </label>
+            <label htmlFor="email" className="block mb-1 font-medium text-white">Correo electrónico</label>
             <input
               id="email"
               type="email"
@@ -107,16 +87,16 @@ export default function RegisterPage() {
             type="submit"
             className="w-full bg-[#505168] text-white py-2 rounded hover:bg-[#DCC48E] hover:text-black transition duration-500 cursor-pointer"
           >
-            Registrarse
+            Iniciar sesión
           </button>
 
           <p className="mt-4 text-center text-white">
-            ¿Ya tienes una cuenta?{' '}
+            ¿No tienes una cuenta?{' '}
             <a
-              href="/login"
+              href="/auth/register"
               className="text-[#DCC48E] hover:text-[#DCC48E]/90 font-semibold underline"
             >
-              Inicia sesión aquí
+              Regístrate aquí
             </a>
           </p>
         </form>
