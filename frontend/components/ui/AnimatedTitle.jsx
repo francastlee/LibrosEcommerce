@@ -4,18 +4,12 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 
 export default function AnimatedTitle() {
-  const [letrasVisibles, setLetrasVisibles] = useState([]);
+  const [show, setShow] = useState(false);
   const ecommerceRef = useRef(null);
+  const text = 'Libros';
 
   useEffect(() => {
-    const texto = 'Libros';
-    const letras = texto.split('');
-
-    letras.forEach((letra, i) => {
-      setTimeout(() => {
-        setLetrasVisibles(prev => [...prev, letra]);
-      }, i * 80);
-    });
+    setShow(true);
 
     setTimeout(() => {
       gsap.to(ecommerceRef.current, {
@@ -24,17 +18,22 @@ export default function AnimatedTitle() {
         duration: 0.8,
         ease: 'power2.out',
       });
-    }, letras.length * 80 + 200);
+    }, text.length * 80 + 200);
   }, []);
 
   return (
     <h1 className="text-4xl font-bold text-center text-white mb-6 drop-shadow leading-tight">
       <span className="inline whitespace-nowrap mr-2">
-        {letrasVisibles.map((letra, i) => (
-          <span key={i} className="inline-block transition-opacity duration-100">
-            {letra}
-          </span>
-        ))}
+        {show &&
+          text.split('').map((letter, i) => (
+            <span
+              key={i}
+              className="inline-block opacity-0"
+              style={{ animation: `fadeInLetter 0.1s ease ${i * 80}ms forwards` }}
+            >
+              {letter}
+            </span>
+          ))}
       </span>
       <span
         ref={ecommerceRef}
@@ -42,6 +41,14 @@ export default function AnimatedTitle() {
       >
         Ecommerce
       </span>
+
+      <style jsx>{`
+        @keyframes fadeInLetter {
+          to {
+            opacity: 1;
+          }
+        }
+      `}</style>
     </h1>
   );
 }

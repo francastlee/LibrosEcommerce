@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
+console.log('Authorization header:', req.headers.authorization);
 
   if (!authHeader?.startsWith('Bearer ')) {
     return res.status(401).json({ error: 'Token no proporcionado' });
@@ -10,6 +11,8 @@ const verifyToken = (req, res, next) => {
   const token = authHeader.split(' ')[1];
 
   try {
+    console.log('Authorization header:', req.headers.authorization);
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded; 
     next();
