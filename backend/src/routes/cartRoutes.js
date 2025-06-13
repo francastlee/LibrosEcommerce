@@ -16,7 +16,8 @@ router.delete('/:bookId', cartController.removeFromCart);
 
 router.delete('/', cartController.clearCart);
 
-router.patch('/:bookId', cartController.updateQuantity);
+router.patch('/:bookId', cartController. updateCartItemQuantity);
+
 
 
 export default router;

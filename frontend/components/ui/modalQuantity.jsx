@@ -4,7 +4,14 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { CircleX } from 'lucide-react';
 
-export default function ModalQuantity({ book, onConfirm, onClose, defaultQuantity = 1 }) {
+export default function modalQuantity({
+  title = '',
+  label = '¿Cuántas unidades?',
+  defaultQuantity = 1,
+  confirmText = 'Agregar',
+  onConfirm,
+  onClose,
+}) {
   const [quantity, setQuantity] = useState(defaultQuantity);
 
   const handleChange = (e) => {
@@ -25,7 +32,7 @@ export default function ModalQuantity({ book, onConfirm, onClose, defaultQuantit
         </button>
 
         <h2 className="text-lg font-bold mb-4">
-          ¿Cuántas unidades de <span className="text-[#DCC48E]">{book.title}</span>?
+          {label} <span className="text-[#DCC48E]">{title}</span>
         </h2>
 
         <input
@@ -49,7 +56,7 @@ export default function ModalQuantity({ book, onConfirm, onClose, defaultQuantit
             onClick={() => onConfirm(quantity)}
             className="px-4 py-2 bg-[#505168] cursor-pointer text-white rounded hover:bg-[#DCC48E] hover:text-[#27233A] transition"
           >
-            Agregar
+            {confirmText}
           </button>
         </div>
       </div>
@@ -57,11 +64,11 @@ export default function ModalQuantity({ book, onConfirm, onClose, defaultQuantit
   );
 }
 
-ModalQuantity.propTypes = {
-  book: PropTypes.shape({
-    title: PropTypes.string.isRequired
-  }).isRequired,
+modalQuantity.propTypes = {
+  title: PropTypes.string,
+  label: PropTypes.string,
+  defaultQuantity: PropTypes.number,
+  confirmText: PropTypes.string,
   onConfirm: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
-  defaultQuantity: PropTypes.number
 };

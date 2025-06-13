@@ -1,6 +1,5 @@
 import * as cartRepository from '../repositories/cartRepository.js';
 import { getBookById } from '../repositories/bookRepository.js';
-import { decrementCartItem, incrementCartItem } from '../repositories/cartRepository.js';
 
 export const addToCart = async (userId, bookId, quantity) => {
   if (!bookId || typeof bookId !== 'number') {
@@ -40,25 +39,17 @@ export const clearCart = async (userId) => {
   return { message: 'Cart cleared' };
 };
 
-export const updateItemQuantity = async (userId, bookId, operation) => {
-  if (!bookId || typeof bookId !== 'number') {
-    throw { status: 400, message: 'Invalid book ID' };
+export const updateQuantity = async (userId, bookId, quantity) => {
+  if (quantity < 1) {
+    throw { status: 400, message: 'La cantidad debe ser mayor o igual a 1' };
   }
 
-  if (!['increment', 'decrement'].includes(operation)) {
-    throw { status: 400, message: 'Invalid operation' }; 
-  }
-
-  let updated;
-  if (operation === 'decrement') {
-    updated = await decrementCartItem(userId, bookId);
-  } else {
-    updated = await incrementCartItem(userId, bookId);
-  }
+  const updated = await cartRepository.updateCartItemQuantity(userId, bookId, quantity);
 
   if (!updated) {
-    throw { status: 404, message: 'Item not found in cart' };
+    throw { status: 404, message: 'El libro no se encuentra en el carrito' };
   }
 
   return updated;
 };
+

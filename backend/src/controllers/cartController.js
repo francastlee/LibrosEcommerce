@@ -52,16 +52,16 @@ export const clearCart = async (req, res) => {
   }
 };
 
-export const updateQuantity = async (req, res) => {
+export const updateCartItemQuantity = async (req, res) => {
   try {
     const userId = req.user.id;
     const bookId = parseInt(req.params.bookId);
-    const { operation } = req.body;
+    const { quantity } = req.body;
 
-    const result = await cartService.updateItemQuantity(userId, bookId, operation);
-    res.status(200).json(result);
+    const updatedItem = await cartService.updateQuantity(userId, bookId, quantity);
+
+    res.status(200).json(updatedItem);
   } catch (err) {
-    res.status(err.status || 500).json({ error: err.message || 'Error updating cart item' });
+    res.status(err.status || 500).json({ error: err.message || 'Error al actualizar cantidad' });
   }
 };
-
