@@ -17,6 +17,8 @@ export default function CartPage() {
   const [success, setSuccess] = useState('');
   const [modalItem, setModalItem] = useState(null);
   const [itemToDelete, setItemToDelete] = useState(null);
+  const [confirmClearAll, setConfirmClearAll] = useState(false);
+
 
   useEffect(() => {
     if (!user?.token) return;
@@ -132,7 +134,7 @@ export default function CartPage() {
   };
 
   return (
-    <section className="min-h-screen bg-[#505168] text-white px-6 pb-28 pt-10 flex flex-col items-center relative">
+    <section className="min-h-[calc(100vh-64px)] bg-[#505168] text-white px-6 pb-28 pt-10 flex flex-col items-center relative">
       <Alert message={error} type="error" onClose={() => setError('')} />
       <Alert message={success} type="success" onClose={() => setSuccess('')} />
 
@@ -151,7 +153,7 @@ export default function CartPage() {
           </button>
         </div>
       ) : (
-        <div className="w-[90%] md:w-[50%] lg:w-[35%] max-h-[600px] overflow-y-auto space-y-4 px-2 mt-20">
+        <div className="w-[90%] md:w-[50%] lg:w-[35%] max-h-[500px] overflow-y-auto space-y-4 px-2 mt-20">
           {items.map((item) => (
             <CartItem
               key={item.book_id}
@@ -191,13 +193,24 @@ export default function CartPage() {
             Total a pagar: ${Number(total).toFixed(2)}
           </span>
           <button
-            onClick={handleClearCart}
-            className="ml-4 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded transition"
+            onClick={() => setConfirmClearAll(true)}
+            className="ml-4 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded transition cursor-pointer"
           >
             Vaciar carrito
           </button>
         </div>
       )}
+      {confirmClearAll && (
+        <ConfirmDeleteModal
+          message="¿Estás seguro que deseas vaciar todo el carrito?"
+          onCancel={() => setConfirmClearAll(false)}
+          onConfirm={() => {
+            handleClearCart();
+            setConfirmClearAll(false);
+          }}
+        />
+      )}
+
     </section>
   );
 }
