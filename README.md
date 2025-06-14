@@ -169,7 +169,7 @@ npm run dev
 
 ##  Usuario demo (ejemplo)
 
-Puedes registrar un usuario desde `/auth/register` o bien en el script de base de datos en el proyecto inserté dos usuario que pueden utilizar, un administrador y un usuario:
+Puedes registrar un usuario desde `/auth/register` o bien en el backup de la base de datos en el proyecto inserté dos usuario que pueden utilizar, un administrador y un usuario:
 
 - Administrador
   - Email: zeta.admin@gmail.com
@@ -207,10 +207,6 @@ npm run dev         # Iniciar app Next.js
 ![image](https://github.com/user-attachments/assets/63d6690b-49a5-4d63-a143-d80e43ede5db)
 
 - Vista de libros
-
-![image](https://github.com/user-attachments/assets/a250cfb7-bb13-463e-86c0-9063e66f2011)
-
-![image](https://github.com/user-attachments/assets/a20b979f-10e2-4a53-b13c-03777a544636)
 
 - Vista del carrito de compras
 
