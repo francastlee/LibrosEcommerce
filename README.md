@@ -1,24 +1,12 @@
-#   LibrosEcommerce
+# LibrosEcommerce
 
-**Este proyecto es el backend de una plataforma e-commerce especializada en libros, desarrollado con Node.js, Express y PostgreSQL.**
-
----
-
-##   Estructura del proyecto
-
-**El backend está organizado en capas siguiendo buenas prácticas:**
-
-- backend/
-- controllers/    # Controladores de las rutas
-- services/       # Lógica de negocio y validaciones
-- repositories/   # Consultas a la base de datos
-- routes/         # Rutas públicas y protegidas
-- middlewares/    # Autenticación y control de roles
-- config/         # Configuración de la base de datos y entorno
+Plataforma e-commerce especializada en libros, desarrollada como prueba técnica Full Stack para ZETA STEAM.
 
 ---
 
-##   Tecnologías utilizadas
+## Tecnologías utilizadas
+
+### Backend
 
 - **Node.js**
 - **Express**
@@ -27,55 +15,214 @@
 - **Bcrypt**
 - **Dotenv**
 
+### Frontend
+
+- **Next.js**
+- **React**
+- **Tailwind CSS**
+- **Context API**
+- **GSAP**
+- **Lucide React Icons**
+
 ---
 
-##   Instalación y ejecución
+## Estructura del proyecto
 
-1. Clona el repositorio y entra en la carpeta del backend:
-   - **cd backend**
+```
+LibrosEcommerce/
+├── backend/
+│   ├── controllers/
+│   ├── services/
+│   ├── repositories/
+│   ├── routes/
+│   ├── middlewares/
+│   └── config/
+└── frontend/
+    ├── app/
+    ├── components/
+    ├── context/
+    ├── hooks/
+    └── styles/
+```
 
-2. Instala las dependencias:
-   - **npm install**
+---
 
-3. Crea el archivo .env en la raíz del backend:
-   - **Ruta:** LibrosEcommerce/backend/.env
-   - **Contenido:**
-    - PORT=8080
-    - JWT_SECRET=clave-secreta-personal
-    - DATABASE_URL=postgresql://user:password@localhost:5432/booksDB
+##  Instalación
 
-4. Ejecuta el script SQL para crear las tablas:
-   - **users**
-   - **roles**
-   - **user_role**
-   - **JWT (JSON Web Tokens)**
-   - **Bcrypt**
-   - **Dotenv**
+### 1. Backend
 
-5. Inicia el servidor:
-   - **npm run dev**
+```bash
+cd backend
+npm install
+```
 
-## Endpoints principales
+#### .env (crear en /backend)
 
-  **Autenticación**
+```
+PORT=8080
+JWT_SECRET=clave-secreta
+DATABASE_URL=postgresql://usuario:contraseña@localhost:5432/booksDB
+```
 
-- POST	   **/api/auth/register**	 Registro de usuario
-- POST	   **/api/auth/login**	     Login
+#### Crear tablas necesarias en PostgreSQL:
 
-  **Libros**
+- `users`
+- `roles`
+- `user_role`
+- `books`
+- `cart_items`
 
-- GET	   **/api/books**	         Lista pública de libros
-- POST	   **/api/books**	         Crear libro (solo admin)
-- PUT	   **/api/books/:id**	     Editar libro (solo admin)
-- DELETE   **/api/books/:id**	     Eliminar libro (solo admin)
+#### Iniciar servidor backend
 
-   **Carrito**
+```bash
+npm run dev
+```
 
-- POST	   **/api/cart**	         Agregar libro al carrito
-- GET      **/api/cart**	         Ver contenido del carrito
-- GET	   **/api/cart/total**	     Ver total acumulado
-- DELETE   **/api/cart/:bookId**	 Eliminar un libro del carrito
-- DELETE   **/api/cart**	         Vaciar todo el carrito
-- PATCH	   **/api/cart/:bookId**	 Actualizar cantidad (operation: "increment" o "decrement")
+---
 
-**Importante: Todos los endpoints del carrito y libros protegidos requieren un token JWT válido.**
+### 2. Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+> Asegúrate de que el backend esté corriendo en `http://localhost:8080`
+
+---
+
+##  Autenticación y Roles
+
+- Registro e inicio de sesión con JWT
+- Middleware para proteger rutas
+- Control de roles (`admin` y `usuario`)
+- Context API en el frontend para mantener sesión
+
+---
+
+## Funcionalidades
+
+### Usuario
+
+- Ver lista de libros
+- Filtrar por nombre y precio
+- Añadir libros al carrito (con cantidad)
+- Editar o eliminar libros del carrito
+- Vaciar carrito completo
+- Ver total acumulado
+
+### Admin
+
+- CRUD de libros
+- Tabla con libros + paginación
+- Panel privado `/admin`
+- Solo accesible con rol `admin`
+
+---
+
+##  Endpoints principales (Backend)
+
+###  Autenticación
+
+| Método | Endpoint            | Descripción           |
+|--------|---------------------|-----------------------|
+| POST   | `/api/auth/register`| Registro de usuario   |
+| POST   | `/api/auth/login`   | Login de usuario      |
+
+###  Libros
+
+| Método | Endpoint            | Descripción                           |
+|--------|---------------------|---------------------------------------|
+| GET    | `/api/books`        | Listado de libros (público)           |
+| GET    | `/api/books/:id`    | Obtener un libro de libros (público)  |
+| POST   | `/api/books`        | Crear libro (solo admin)              |
+| PUT    | `/api/books/:id`    | Editar libro (solo admin)             |
+| DELETE | `/api/books/:id`    | Eliminar libro (solo admin)           |
+
+###  Carrito
+
+| Método | Endpoint               | Descripción                          |
+|--------|------------------------|--------------------------------------|
+| GET    | `/api/cart`            | Ver carrito del usuario              |
+| POST   | `/api/cart`            | Añadir libro al carrito              |
+| PATCH  | `/api/cart/:bookId`    | Cambiar cantidad de un libro         |
+| DELETE | `/api/cart/:bookId`    | Eliminar un libro del carrito        |
+| DELETE | `/api/cart`            | Vaciar todo el carrito               |
+| GET    | `/api/cart/total`      | Ver total acumulado del carrito      |
+
+> Todos los endpoints protegidos requieren un token JWT válido.
+
+---
+
+## Rutas principales (Frontend)
+
+| Ruta             | Descripción                         |
+|------------------|-------------------------------------|
+| `/books`         | Ver libros disponibles              |
+| `/cart`          | Ver y gestionar el carrito          |
+| `/admin`         | Panel de administración (admin)     |
+| `/auth/login`    | Iniciar sesión                      |
+| `/auth/register` | Registro                            |
+
+---
+
+##  Usuario demo (ejemplo)
+
+Puedes registrar un usuario desde `/auth/register` o bien en el script de base de datos en el proyecto inserté dos usuario que pueden utilizar, un administrador y un usuario:
+
+- Administrador
+  - Email: zeta.admin@gmail.com
+  - Password: Zeta1029
+- Usuario
+  - Email: zeta@gmail.com
+  - Password: Zeta1029
+
+---
+
+##  Scripts útiles
+
+### Backend
+
+```bash
+npm run dev         # Iniciar servidor
+```
+
+### Frontend
+
+```bash
+npm run dev         # Iniciar app Next.js
+```
+
+---
+
+## Evidencias
+
+- Vista de inicio de sesión
+
+![image](https://github.com/user-attachments/assets/d6e5f7ce-dc5e-4db8-b946-1d9f8170b6d1)
+
+- Vista de registro
+
+![image](https://github.com/user-attachments/assets/63d6690b-49a5-4d63-a143-d80e43ede5db)
+
+- Vista de libros
+
+![image](https://github.com/user-attachments/assets/a250cfb7-bb13-463e-86c0-9063e66f2011)
+
+![image](https://github.com/user-attachments/assets/a20b979f-10e2-4a53-b13c-03777a544636)
+
+- Vista del carrito de compras
+
+![image](https://github.com/user-attachments/assets/ec9d815f-b8c8-4a1e-b022-3562263873e4)
+
+![image](https://github.com/user-attachments/assets/8114b678-00a8-4179-91d7-c77e137d88d6)
+
+- Vista del administrador
+
+![image](https://github.com/user-attachments/assets/52f9f46e-27ed-4743-ad0c-2e683382b7fe)
+
+![image](https://github.com/user-attachments/assets/6e111432-870c-4235-969b-e33631edf931)
+
+![image](https://github.com/user-attachments/assets/88b9cf6e-550b-4cfb-a030-dc9b41e6a7bb)
+

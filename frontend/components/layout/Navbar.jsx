@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useAuth } from '../../context/AuthContext';
-import { LibraryBig, LogOut, Menu, ShieldUser, ShoppingCart, X } from 'lucide-react';
+import { LibraryBig, LogOut, Menu, ShieldUser, ShoppingCart, User, X } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Navbar() {
@@ -32,13 +32,19 @@ export default function Navbar() {
 
           {isAdmin && (
             <Link
-              href="/admin/books"
+              href="/admin"
               className="flex items-center gap-1 text-sm hover:text-[#B3C0A4] transition"
             >
               <span className="text-[#DCC48E] font-semibold">
                 <ShieldUser className="inline w-4 h-4 mr-2" /> Admin
-            </span>
+              </span>
             </Link>
+          )}
+
+          {authenticated && (
+            <span className="flex items-center gap-2 text-sm text-[#B3C0A4] font-semibold mr-2 select-none">
+              <User className="w-4 h-4"/> Hola, {user.name}
+            </span>
           )}
         </div>
 
@@ -53,10 +59,10 @@ export default function Navbar() {
             </button>
           ) : (
             <Link
-              href="/auth/register"
+              href="/auth/login"
               className="bg-[#505168] hover:bg-[#B3C0A4] cursor-pointer text-white text-sm font-medium px-4 py-2 rounded-xl transition"
             >
-              Sign Up
+              Iniciar sesión
             </Link>
           )}
         </div>
@@ -71,6 +77,10 @@ export default function Navbar() {
 
       {menuOpen && (
         <div className="md:hidden mt-4 space-y-4">
+          {authenticated && (
+            <p className="text-sm text-[#DCC48E] font-semibold select-none">Hola, {user.name}</p>
+          )}
+
           <Link href="/books" className="block text-sm hover:text-[#B3C0A4]" onClick={() => setMenuOpen(false)}>
             <LibraryBig className="inline w-4 h-4 mr-2" /> Libros
           </Link>
@@ -82,7 +92,7 @@ export default function Navbar() {
           {isAdmin && (
             <Link href="/admin/books" className="block text-sm hover:text-[#B3C0A4]" onClick={() => setMenuOpen(false)}>
               <span className="text-[#DCC48E] font-semibold">
-              <ShieldUser className="inline w-4 h-4 mr-2" />Admin
+                <ShieldUser className="inline w-4 h-4 mr-2" />Admin
               </span>
             </Link>
           )}
@@ -100,11 +110,11 @@ export default function Navbar() {
             </button>
           ) : (
             <Link
-              href="/register"
+              href="/auth/login"
               onClick={() => setMenuOpen(false)}
               className="block bg-[#505168] hover:bg-[#B3C0A4] cursor-pointer text-white text-sm font-medium px-4 py-2 rounded-xl transition"
             >
-              Sign Up
+              Iniciar sesión
             </Link>
           )}
         </div>

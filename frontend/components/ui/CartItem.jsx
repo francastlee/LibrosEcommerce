@@ -1,6 +1,6 @@
 'use client';
 
-import { Pencil } from 'lucide-react';
+import { Pencil, Trash2 } from 'lucide-react';
 import PropTypes from 'prop-types';
 
 export default function CartItem({ item, onRemove, onEdit }) {
@@ -18,7 +18,7 @@ export default function CartItem({ item, onRemove, onEdit }) {
         <p className="text-sm text-gray-300">Subtotal: ${item.subtotal}</p>
 
         <div className="mt-2 flex items-center gap-2">
-          <span className="text-sm">Cantidad: {item.quantity}</span>
+          <span className="text-sm text-gray-300">Cantidad: {item.quantity}</span>
           <button
             type="button"
             onClick={onEdit}
@@ -34,9 +34,9 @@ export default function CartItem({ item, onRemove, onEdit }) {
         type="button"
         onClick={onRemove}
         aria-label={`Eliminar ${item.title} del carrito`}
-        className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm font-semibold cursor-pointer"
+        className="bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded text-sm font-semibold cursor-pointer me-6"
       >
-        Eliminar
+        <Trash2 />
       </button>
     </div>
   );
