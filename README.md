@@ -208,6 +208,10 @@ npm run dev         # Iniciar app Next.js
 
 - Vista de libros
 
+![image](https://github.com/user-attachments/assets/2288718d-fc38-4917-b684-c6da088a960f)
+
+![image](https://github.com/user-attachments/assets/442bbbce-169b-483f-97b7-41f83e728317)
+
 - Vista del carrito de compras
 
 ![image](https://github.com/user-attachments/assets/ec9d815f-b8c8-4a1e-b022-3562263873e4)
